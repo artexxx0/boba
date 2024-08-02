@@ -28,4 +28,25 @@ selectDateButton.addEventListener("click", function(){
         alert("Оберіть дату")
         return
     }
+    selectedDateSpan.innerHTML = choosedDate
+    taskDateSpan.innerHTML = choosedDate
+    showScreen(taskScreen)
+    renderTasks(choosedDate)
 })
+
+function renderTasks(date){
+    taskList.innerHTML = ""
+    if(tasks[date]){
+        tasks[date].forEach(function(task) {
+            li = document.createElement('li')
+            li.textContent = task
+
+            const deleteBtn = document.createElement('button')
+            deleteBtn.textContent = "Видалити"
+            deleteBtn.classList.add('delete')
+            li.appendChild(deleteBtn)
+
+            taskList.appendChild(li)
+        })
+    }
+}
