@@ -50,3 +50,70 @@ function renderTasks(date){
         })
     }
 }
+// Додавання обробника події на кнопку додавання завдання
+addTaskButton.addEventListener('click', function() {
+    showScreen(addTaskScreen) // Показати екран додавання завдання
+})
+
+
+// Додавання обробника події на кнопку повернення до календаря
+backToCalendarButton.addEventListener('click', function() {
+    showScreen(calendarScreen) // Показати екран календаря
+})
+
+
+// Додавання обробника події на кнопку скасування додавання завдання
+cancelAddTaskButton.addEventListener('click', function() {
+    showScreen(taskScreen) // Показати екран завдань
+})
+
+
+// Додавання обробника події на форму додавання завдання
+taskForm.addEventListener('submit', function(e) {
+    //За замовчуванням, коли форму відправляють, браузер перезавантажує сторінку, що призводить до втрати всіх даних, які не зберігаються.
+    e.preventDefault() // Запобігти стандартній поведінці форми
+    let taskText = taskInput.value // Отримання тексту завдання
+    let selectedDate = taskDateSpan.innerHTML // Отримання вибраної дати
+
+
+
+
+    if (!tasks[selectedDate]) { // Якщо для вибраної дати немає завдань, створити новий масив
+        tasks[selectedDate] = []
+    }
+
+
+    tasks[selectedDate].push(taskText) // Додати нове завдання до масиву завдань для вибраної дати
+    taskInput.value = '' // Очистити поле введення
+    showScreen(taskScreen) // Показати екран завдань
+    renderTasks(selectedDate) // Відобразити завдання для вибраної дати
+})
+
+
+// Додавання обробника події на список завдань для видалення завдань
+taskList.addEventListener('click', function(event) {
+    if (event.target.className == 'delete') { // Якщо клік був на кнопку видалення
+        let taskItem = event.target.parentElement // Отримати елемент завдання
+        /*Тут event.target — це елемент, на який було натиснуто,
+        а parentElement — це батьківський елемент цього елемента.
+        Цей рядок використовує DOM властивість parentElement,
+        щоб отримати батьківський елемент від елемента, на який було натиснуто. */
+        let selectedDate = taskDateSpan.innerHTML // Отримати вибрану дату
+        let taskText = taskItem.firstChild.nodeValue.trim() // Отримати текст завдання
+        /*Тут taskItem — це елемент DOM, а firstChild — це перший дочірній вузол цього елемента.
+        nodeValue повертає значення текстового вузла,
+        а trim() видаляє пробіли з початку та кінця тексту.
+        Цей рядок передбачає, що перший дочірній вузол є текстовим вузлом, і використовується для отримання та обробки тексту всередині цього елемента. */
+        // Видалити завдання з масиву завдань для вибраної дати
+        for (let i = 0; i < tasks[selectedDate].length; i+=1) {
+            if (tasks[selectedDate][i] == taskText) {
+                tasks[selectedDate].splice(i, 1) // Видалити завдання з масиву
+                break
+            }
+        }
+        renderTasks(selectedDate) // Відобразити оновлений список завдань
+    }
+})
+
+
+
