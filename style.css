@@ -105,6 +105,7 @@ li .delete:hover {
 
     li .delete {
         padding: 5px;
+        width: 100px;
     }
 }
 
